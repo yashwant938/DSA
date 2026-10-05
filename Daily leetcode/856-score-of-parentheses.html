@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LeetCode 856 | Score of Parentheses</title>
+
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --surface-soft: #f8fbff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --line: #e2e8f0;
+            --line-strong: #cbd5e1;
+
+            --blue: #2563eb;
+            --blue-dark: #1d4ed8;
+            --blue-soft: #dbeafe;
+
+            --purple: #7c3aed;
+            --purple-soft: #ede9fe;
+
+            --green: #059669;
+            --green-soft: #d1fae5;
+
+            --orange: #ea580c;
+            --orange-soft: #ffedd5;
+
+            --red: #dc2626;
+            --red-soft: #fee2e2;
+
+            --code-bg: #0f172a;
+            --code-text: #e2e8f0;
+
+            --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+            --shadow-md: 0 12px 30px rgba(15, 23, 42, 0.08);
+            --shadow-lg: 0 20px 48px rgba(15, 23, 42, 0.12);
+
+            --radius: 18px;
+            --radius-sm: 10px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-width: 320px;
+            background:
+                radial-gradient(circle at 10% 0%, #eff6ff 0, transparent 30%),
+                radial-gradient(circle at 95% 18%, #f5f3ff 0, transparent 26%),
+                var(--bg);
+            color: var(--text);
+            font-family:
+                Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+                "Segoe UI", sans-serif;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        .app-shell {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 32px 22px 56px;
+        }
+
+        /* ---------- Header ---------- */
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            color: white;
+            background: linear-gradient(135deg, var(--blue), var(--purple));
+            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.24);
+            font-size: 18px;
+        }
+
+        .brand span {
+            color: var(--blue);
+        }
+
+        .status-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border: 1px solid #a7f3d0;
+            border-radius: 999px;
+            background: #ecfdf5;
+            color: #047857;
+            font-size: 0.82rem;
+            font-weight: 750;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: var(--green);
+            box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.12);
+        }
+
+        .hero {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            margin: 36px 0 28px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            color: var(--blue);
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 26px;
+            height: 2px;
+            border-radius: 4px;
+            background: var(--blue);
+        }
+
+        h1 {
+            margin: 0;
+            max-width: 800px;
+            font-size: clamp(2rem, 4vw, 3.45rem);
+            line-height: 1.05;
+            letter-spacing: -0.05em;
+        }
+
+        .hero p {
+            max-width: 680px;
+            margin: 16px 0 0;
+            color: var(--muted);
+            font-size: 1.03rem;
+            line-height: 1.7;
+        }
+
+        .difficulty-card {
+            min-width: 150px;
+            padding: 16px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.75);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .difficulty-card span {
+            display: block;
+            color: var(--muted);
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+        }
+
+        .difficulty-card strong {
+            display: block;
+            margin-top: 6px;
+            color: var(--orange);
+            font-size: 1.05rem;
+        }
+
+        /* ---------- Cards ---------- */
+
+        .card {
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 22px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            font-size: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .icon-box {
+            width: 32px;
+            height: 32px;
+            display: grid;
+            place-items: center;
+            border-radius: 9px;
+            color: var(--blue);
+            background: var(--blue-soft);
+            font-size: 0.95rem;
+        }
+
+        .muted-label {
+            color: var(--muted);
+            font-size: 0.82rem;
+            font-weight: 650;
+        }
+
+        /* ---------- Rules ---------- */
+
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .rule {
+            position: relative;
+            min-height: 126px;
+            padding: 23px;
+            border-right: 1px solid var(--line);
+        }
+
+        .rule:last-child {
+            border-right: none;
+        }
+
+        .rule-number {
+            display: inline-grid;
+            width: 26px;
+            height: 26px;
+            place-items: center;
+            border-radius: 8px;
+            color: var(--blue);
+            background: var(--blue-soft);
+            font-size: 0.78rem;
+            font-weight: 800;
+        }
+
+        .rule code {
+            display: block;
+            margin: 13px 0 7px;
+            color: var(--text);
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+            font-size: 1.13rem;
+            font-weight: 800;
+        }
+
+        .rule p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.9rem;
+            line-height: 1.45;
+        }
+
+        /* ---------- Main Layout ---------- */
+
+        .workspace {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(380px, 0.9fr);
+            gap: 22px;
+            margin-top: 22px;
+        }
+
+        .left-column,
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        /* ---------- Code ---------- */
+
+        .code-card {
+            background: var(--code-bg);
+            border-color: #1e293b;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .code-card .card-header {
+            border-bottom-color: #1e293b;
+        }
+
+        .code-card .card-title {
+            color: white;
+        }
+
+        .code-card .icon-box {
+            color: #93c5fd;
+            background: rgba(59, 130, 246, 0.18);
+        }
+
+        .language-pill {
+            padding: 6px 10px;
+            border: 1px solid #334155;
+            border-radius: 999px;
+            color: #cbd5e1;
+            background: #172033;
+            font-family: "SFMono-Regular", Consolas, monospace;
+            font-size: 0.72rem;
+        }
+
+        .code-window {
+            position: relative;
+            padding: 18px 0;
+            overflow-x: auto;
+        }
+
+        .code-line {
+            display: grid;
+            grid-template-columns: 52px 1fr;
+            min-width: 610px;
+            padding: 3px 20px 3px 0;
+            color: var(--code-text);
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            white-space: pre;
+            transition: background 220ms ease, color 220ms ease;
+        }
+
+        .code-line.active {
+            color: white;
+            background: linear-gradient(
+                90deg,
+                rgba(37, 99, 235, 0.31),
+                rgba(37, 99, 235, 0.06)
+            );
+            box-shadow: inset 3px 0 0 #60a5fa;
+        }
+
+        .line-no {
+            padding-right: 16px;
+            color: #64748b;
+            text-align: right;
+            user-select: none;
+        }
+
+        .kw { color: #c084fc; }
+        .type { color: #67e8f9; }
+        .fn { color: #fbbf24; }
+        .comment { color: #64748b; }
+        .literal { color: #86efac; }
+        .op { color: #fda4af; }
+
+        /* ---------- Input ---------- */
+
+        .input-content {
+            padding: 22px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text);
+            font-size: 0.87rem;
+            font-weight: 760;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            min-width: 0;
+            padding: 13px 14px;
+            border: 1px solid var(--line-strong);
+            border-radius: 11px;
+            outline: none;
+            color: var(--text);
+            background: #fff;
+            font-family: "SFMono-Regular", Consolas, monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            transition: border 180ms ease, box-shadow 180ms ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+        }
+
+        .validation {
+            min-height: 19px;
+            margin: 9px 0 0;
+            color: var(--muted);
+            font-size: 0.8rem;
+        }
+
+        .validation.error {
+            color: var(--red);
+        }
+
+        /* ---------- Visualizer ---------- */
+
+        .visualizer-body {
+            padding: 22px;
+        }
+
+        .step-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .step-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 10px;
+            border-radius: 999px;
+            color: var(--blue-dark);
+            background: var(--blue-soft);
+            font-size: 0.78rem;
+            font-weight: 800;
+        }
+
+        .step-badge span {
+            display: grid;
+            width: 18px;
+            height: 18px;
+            place-items: center;
+            border-radius: 999px;
+            color: white;
+            background: var(--blue);
+            font-size: 0.68rem;
+        }
+
+        .operation-tag {
+            max-width: 55%;
+            overflow: hidden;
+            color: var(--muted);
+            font-size: 0.82rem;
+            font-weight: 650;
+            text-align: right;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .tokens-label,
+        .section-label {
+            margin-bottom: 10px;
+            color: var(--muted);
+            font-size: 0.73rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .tokens {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            min-height: 55px;
+            padding: 12px;
+            border: 1px dashed var(--line-strong);
+            border-radius: 12px;
+            background: var(--surface-soft);
+        }
+
+        .token {
+            position: relative;
+            display: grid;
+            width: 35px;
+            height: 35px;
+            place-items: center;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            color: #475569;
+            background: #fff;
+            font-family: "SFMono-Regular", Consolas, monospace;
+            font-size: 1rem;
+            font-weight: 800;
+            transform: translateY(0);
+            transition:
+                transform 230ms ease,
+                background 230ms ease,
+                border 230ms ease,
+                color 230ms ease,
+                box-shadow 230ms ease;
+        }
+
+        .token.done {
+            color: var(--green);
+            border-color: #a7f3d0;
+            background: var(--green-soft);
+        }
+
+        .token.current.open {
+            color: var(--blue-dark);
+            border-color: #93c5fd;
+            background: var(--blue-soft);
+            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.18);
+            transform: translateY(-5px) scale(1.08);
+            animation: pulseBlue 1.1s infinite;
+        }
+
+        .token.current.close {
+            color: var(--orange);
+            border-color: #fdba74;
+            background: var(--orange-soft);
+            box-shadow: 0 8px 18px rgba(234, 88, 12, 0.16);
+            transform: translateY(-5px) scale(1.08);
+            animation: pulseOrange 1.1s infinite;
+        }
+
+        @keyframes pulseBlue {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.2); }
+            50% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
+        }
+
+        @keyframes pulseOrange {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.2); }
+            50% { box-shadow: 0 0 0 8px rgba(234, 88, 12, 0); }
+        }
+
+        .state-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .state-card {
+            padding: 15px;
+            border: 1px solid var(--line);
+            border-radius: 13px;
+            background: #fff;
+        }
+
+        .state-card .section-label {
+            margin-bottom: 8px;
+        }
+
+        .state-value {
+            color: var(--text);
+            font-family: "SFMono-Regular", Consolas, monospace;
+            font-size: 1.55rem;
+            font-weight: 850;
+            letter-spacing: -0.04em;
+        }
+
+        .state-value.result {
+            color: var(--purple);
+        }
+
+        .stack-region {
+            margin-top: 20px;
+            padding: 16px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: linear-gradient(135deg, #f8fafc, #f8fbff);
+        }
+
+        .stack-stage {
+            display: flex;
+            flex-direction: column-reverse;
+            justify-content: flex-start;
+            gap: 8px;
+            min-height: 122px;
+            margin-top: 11px;
+            padding: 11px;
+            border: 1px dashed #cbd5e1;
+            border-radius: 11px;
+            background:
+                repeating-linear-gradient(
+                    90deg,
+                    transparent 0,
+                    transparent 27px,
+                    rgba(148, 163, 184, 0.05) 28px
+                ),
+                #fff;
+        }
+
+        .stack-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 9px 11px;
+            border: 1px solid #c4b5fd;
+            border-radius: 8px;
+            color: #5b21b6;
+            background: var(--purple-soft);
+            font-family: "SFMono-Regular", Consolas, monospace;
+            font-size: 0.86rem;
+            font-weight: 800;
+            animation: stackIn 260ms ease both;
+        }
+
+        .stack-item small {
+            color: #7c3aed;
+            font-family: Inter, sans-serif;
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+        }
+
+        .empty-stack {
+            display: grid;
+            min-height: 98px;
+            place-items: center;
+            color: #94a3b8;
+            font-size: 0.88rem;
+        }
+
+        @keyframes stackIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px) scale(0.94);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .explanation {
+            min-height: 77px;
+            margin-top: 20px;
+            padding: 14px 15px;
+            border-left: 4px solid var(--blue);
+            border-radius: 0 11px 11px 0;
+            color: #334155;
+            background: #eff6ff;
+            font-size: 0.9rem;
+            line-height: 1.55;
+        }
+
+        .formula {
+            display: inline-block;
+            margin-top: 4px;
+            color: var(--blue-dark);
+            font-family: "SFMono-Regular", Consolas, monospace;
+            font-weight: 800;
+        }
+
+        /* ---------- Controls ---------- */
+
+        .controls-card .card-header {
+            padding-bottom: 14px;
+        }
+
+        .controls-body {
+            padding: 16px 22px 22px;
+        }
+
+        .progress-track {
+            height: 7px;
+            overflow: hidden;
+            border-radius: 999px;
+            background: #e2e8f0;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, var(--blue), var(--purple));
+            transition: width 260ms ease;
+        }
+
+        .controls-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 17px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 9px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 40px;
+            padding: 0 14px;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.84rem;
+            font-weight: 780;
+            transition:
+                transform 160ms ease,
+                background 160ms ease,
+                box-shadow 160ms ease,
+                border 160ms ease;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+        }
+
+        .btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.46;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+            box-shadow: 0 8px 16px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            box-shadow: 0 11px 21px rgba(37, 99, 235, 0.27);
+        }
+
+        .btn-secondary {
+            border-color: var(--line-strong);
+            color: #334155;
+            background: #fff;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            border-color: #93c5fd;
+            color: var(--blue-dark);
+            background: #eff6ff;
+        }
+
+        .speed-wrap {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--muted);
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        select {
+            padding: 8px 9px;
+            border: 1px solid var(--line-strong);
+            border-radius: 9px;
+            color: #334155;
+            background: white;
+            font-size: 0.8rem;
+            outline: none;
+        }
+
+        .keyboard-tip {
+            margin-top: 15px;
+            color: var(--muted);
+            font-size: 0.77rem;
+        }
+
+        kbd {
+            padding: 2px 6px;
+            border: 1px solid #cbd5e1;
+            border-bottom-width: 2px;
+            border-radius: 5px;
+            color: #475569;
+            background: #f8fafc;
+            font-family: "SFMono-Regular", Consolas, monospace;
+            font-size: 0.72rem;
+        }
+
+        /* ---------- Complexity ---------- */
+
+        .complexity-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .complexity-item {
+            padding: 20px 22px;
+            border-right: 1px solid var(--line);
+        }
+
+        .complexity-item:last-child {
+            border-right: none;
+        }
+
+        .complexity-item span {
+            display: block;
+            color: var(--muted);
+            font-size: 0.77rem;
+            font-weight: 800;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+        }
+
+        .complexity-item strong {
+            display: block;
+            margin-top: 6px;
+            color: var(--blue-dark);
+            font-family: "SFMono-Regular", Consolas, monospace;
+            font-size: 1.4rem;
+        }
+
+        .complexity-item p {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 0.82rem;
+            line-height: 1.45;
+        }
+
+        .footer-note {
+            margin: 26px 0 0;
+            color: #94a3b8;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        @media (max-width: 980px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .difficulty-card {
+                min-width: 190px;
+            }
+        }
+
+        @media (max-width: 670px) {
+            .app-shell {
+                padding: 22px 14px 40px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .rules-grid,
+            .complexity-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .rule,
+            .complexity-item {
+                border-right: none;
+                border-bottom: 1px solid var(--line);
+            }
+
+            .rule:last-child,
+            .complexity-item:last-child {
+                border-bottom: none;
+            }
+
+            .input-group,
+            .controls-row {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .speed-wrap {
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="app-shell">
+        <header class="topbar">
+            <div class="brand">
+                <div class="brand-mark">&lt;/&gt;</div>
+                <div>Daily <span>LeetCode</span></div>
+            </div>
+
+            <div class="status-chip">
+                <span class="status-dot"></span>
+                Interactive Visualizer
+            </div>
+        </header>
+
+        <section class="hero">
+            <div>
+                <div class="eyebrow">Stack / Simulation</div>
+                <h1>856. Score of Parentheses</h1>
+                <p>
+                    See exactly how the stack stores outer scores while
+                    <code>res</code> builds the score for the current nested
+                    parentheses context.
+                </p>
+            </div>
+
+            <div class="difficulty-card">
+                <span>Difficulty</span>
+                <strong>Medium</strong>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <span class="icon-box">◎</span>
+                    Scoring rules
+                </h2>
+                <span class="muted-label">Balanced parentheses only</span>
+            </div>
+
+            <div class="rules-grid">
+                <article class="rule">
+                    <span class="rule-number">01</span>
+                    <code>() = 1</code>
+                    <p>An empty pair contributes one point.</p>
+                </article>
+
+                <article class="rule">
+                    <span class="rule-number">02</span>
+                    <code>AB = A + B</code>
+                    <p>Adjacent valid strings add their scores.</p>
+                </article>
+
+                <article class="rule">
+                    <span class="rule-number">03</span>
+                    <code>(A) = 2 × A</code>
+                    <p>Wrapping a valid string doubles its score.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="workspace">
+            <div class="left-column">
+                <section class="card code-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span class="icon-box">{ }</span>
+                            C++ implementation
+                        </h2>
+                        <span class="language-pill">C++17</span>
+                    </div>
+
+                    <div class="code-window">
+                        <div class="code-line" data-line="1">
+                            <span class="line-no">1</span>
+                            <span><span class="kw">class</span> <span class="type">Solution</span> {</span>
+                        </div>
+                        <div class="code-line" data-line="2">
+                            <span class="line-no">2</span>
+                            <span><span class="kw">public</span>:</span>
+                        </div>
+                        <div class="code-line" data-line="3">
+                            <span class="line-no">3</span>
+                            <span>    <span class="type">int</span> <span class="fn">scoreOfParentheses</span>(<span class="type">string</span> s) {</span>
+                        </div>
+                        <div class="code-line" data-line="4">
+                            <span class="line-no">4</span>
+                            <span>        <span class="type">stack</span>&lt;<span class="type">int</span>&gt; st;</span>
+                        </div>
+                        <div class="code-line" data-line="5">
+                            <span class="line-no">5</span>
+                            <span>        <span class="type">int</span> res <span class="op">=</span> <span class="literal">0</span>;</span>
+                        </div>
+                        <div class="code-line" data-line="6">
+                            <span class="line-no">6</span>
+                            <span>        <span class="kw">for</span> (<span class="type">char</span> c : s) {</span>
+                        </div>
+                        <div class="code-line" data-line="7">
+                            <span class="line-no">7</span>
+                            <span>            <span class="kw">if</span> (c <span class="op">==</span> <span class="literal">'('</span>) {</span>
+                        </div>
+                        <div class="code-line" data-line="8">
+                            <span class="line-no">8</span>
+                            <span>                st.<span class="fn">push</span>(res); <span class="comment">// save outer score</span></span>
+                        </div>
+                        <div class="code-line" data-line="9">
+                            <span class="line-no">9</span>
+                            <span>                res <span class="op">=</span> <span class="literal">0</span>; <span class="comment">// start inner score</span></span>
+                        </div>
+                        <div class="code-line" data-line="10">
+                            <span class="line-no">10</span>
+                            <span>            } <span class="kw">else</span> {</span>
+                        </div>
+                        <div class="code-line" data-line="11">
+                            <span class="line-no">11</span>
+                            <span>                res <span class="op">=</span> st.<span class="fn">top</span>() <span class="op">+</span> <span class="fn">max</span>(res <span class="op">*</span> <span class="literal">2</span>, <span class="literal">1</span>);</span>
+                        </div>
+                        <div class="code-line" data-line="12">
+                            <span class="line-no">12</span>
+                            <span>                st.<span class="fn">pop</span>();</span>
+                        </div>
+                        <div class="code-line" data-line="13">
+                            <span class="line-no">13</span>
+                            <span>            }</span>
+                        </div>
+                        <div class="code-line" data-line="14">
+                            <span class="line-no">14</span>
+                            <span>        }</span>
+                        </div>
+                        <div class="code-line" data-line="15">
+                            <span class="line-no">15</span>
+                            <span>        <span class="kw">return</span> res;</span>
+                        </div>
+                        <div class="code-line" data-line="16">
+                            <span class="line-no">16</span>
+                            <span>    }</span>
+                        </div>
+                        <div class="code-line" data-line="17">
+                            <span class="line-no">17</span>
+                            <span>};</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span class="icon-box">⌘</span>
+                            Test input
+                        </h2>
+                        <span class="muted-label">Try: (), (()), ()(), (()())</span>
+                    </div>
+
+                    <div class="input-content">
+                        <label class="input-label" for="inputStr">
+                            Balanced parentheses string
+                        </label>
+
+                        <div class="input-group">
+                            <input
+                                id="inputStr"
+                                type="text"
+                                value="(()())"
+                                autocomplete="off"
+                                spellcheck="false"
+                                aria-label="Balanced parentheses input"
+                            />
+                            <button id="loadBtn" class="btn btn-primary">
+                                Load input
+                            </button>
+                        </div>
+
+                        <p id="validationMsg" class="validation">
+                            Ready to execute the algorithm.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span class="icon-box">◷</span>
+                            Complexity
+                        </h2>
+                        <span class="muted-label">Single left-to-right scan</span>
+                    </div>
+
+                    <div class="complexity-grid">
+                        <div class="complexity-item">
+                            <span>Time complexity</span>
+                            <strong>O(n)</strong>
+                            <p>Each parenthesis is processed exactly once.</p>
+                        </div>
+
+                        <div class="complexity-item">
+                            <span>Space complexity</span>
+                            <strong>O(n)</strong>
+                            <p>The stack can grow up to the nesting depth.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="right-column">
+                <section class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span class="icon-box">▶</span>
+                            Execution trace
+                        </h2>
+                        <span id="finalBadge" class="muted-label">Not started</span>
+                    </div>
+
+                    <div class="visualizer-body">
+                        <div class="step-meta">
+                            <div id="stepBadge" class="step-badge">
+                                <span>0</span>
+                                Initial state
+                            </div>
+                            <div id="operationTag" class="operation-tag">
+                                Waiting for input
+                            </div>
+                        </div>
+
+                        <div class="tokens-label">Input stream</div>
+                        <div id="tokens" class="tokens"></div>
+
+                        <div class="state-grid">
+                            <div class="state-card">
+                                <div class="section-label">Current character</div>
+                                <div id="currentChar" class="state-value">—</div>
+                            </div>
+
+                            <div class="state-card">
+                                <div class="section-label">Current res</div>
+                                <div id="resValue" class="state-value result">0</div>
+                            </div>
+                        </div>
+
+                        <div class="stack-region">
+                            <div class="section-label">Stack: outer scores</div>
+                            <div id="stackStage" class="stack-stage"></div>
+                        </div>
+
+                        <div id="explanation" class="explanation">
+                            Start from left to right. When you see <code>(</code>,
+                            save the outer score and calculate the nested score
+                            from zero.
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card controls-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span class="icon-box">⚙</span>
+                            Playback controls
+                        </h2>
+                        <span id="progressText" class="muted-label">0 / 0</span>
+                    </div>
+
+                    <div class="controls-body">
+                        <div class="progress-track">
+                            <div id="progressBar" class="progress-bar"></div>
+                        </div>
+
+                        <div class="controls-row">
+                            <div class="button-group">
+                                <button id="prevBtn" class="btn btn-secondary" disabled>
+                                    ← Previous
+                                </button>
+
+                                <button id="playBtn" class="btn btn-primary">
+                                    ▶ Auto play
+                                </button>
+
+                                <button id="nextBtn" class="btn btn-secondary">
+                                    Next →
+                                </button>
+
+                                <button id="resetBtn" class="btn btn-secondary">
+                                    ↻ Reset
+                                </button>
+                            </div>
+
+                            <label class="speed-wrap">
+                                Speed
+                                <select id="speedSelect">
+                                    <option value="1300">Slow</option>
+                                    <option value="850" selected>Normal</option>
+                                    <option value="450">Fast</option>
+                                </select>
+                            </label>
+                        </div>
+
+                        <div class="keyboard-tip">
+                            Keyboard: <kbd>←</kbd> previous, <kbd>→</kbd> next,
+                            <kbd>Space</kbd> auto-play/pause, <kbd>R</kbd> reset.
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <p class="footer-note">
+            Built as an interactive explanation for the Daily LeetCode repository.
+        </p>
+    </main>
+
+    <script>
+        const inputStr = document.getElementById("inputStr");
+        const loadBtn = document.getElementById("loadBtn");
+        const validationMsg = document.getElementById("validationMsg");
+
+        const tokensEl = document.getElementById("tokens");
+        const currentCharEl = document.getElementById("currentChar");
+        const resValueEl = document.getElementById("resValue");
+        const stackStageEl = document.getElementById("stackStage");
+        const explanationEl = document.getElementById("explanation");
+        const operationTagEl = document.getElementById("operationTag");
+        const stepBadgeEl = document.getElementById("stepBadge");
+        const finalBadgeEl = document.getElementById("finalBadge");
+
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const playBtn = document.getElementById("playBtn");
+        const resetBtn = document.getElementById("resetBtn");
+
+        const progressBar = document.getElementById("progressBar");
+        const progressText = document.getElementById("progressText");
+        const speedSelect = document.getElementById("speedSelect");
+
+        let input = "";
+        let steps = [];
+        let currentStep = -1;
+        let autoplayTimer = null;
+
+        function isBalancedParentheses(str) {
+            let balance = 0;
+
+            for (const ch of str) {
+                if (ch !== "(" && ch !== ")") return false;
+
+                if (ch === "(") balance++;
+                else balance--;
+
+                if (balance < 0) return false;
+            }
+
+            return str.length > 0 && balance === 0;
+        }
+
+        function buildSteps(str) {
+            const stack = [];
+            let res = 0;
+            const trace = [];
+
+            for (let i = 0; i < str.length; i++) {
+                const ch = str[i];
+
+                if (ch === "(") {
+                    const outerScore = res;
+
+                    stack.push(res);
+                    res = 0;
+
+                    trace.push({
+                        index: i,
+                        char: ch,
+                        stack: [...stack],
+                        res,
+                        type: "open",
+                        line: 8,
+                        title: "Push outer score",
+                        formula: `st.push(${outerScore}), then res = 0`,
+                        explanation:
+                            `Encountered <code>(</code>. Save the score accumulated outside this nested group, ` +
+                            `so push <strong>${outerScore}</strong> onto the stack. ` +
+                            `Now reset <code>res</code> to <strong>0</strong> to calculate the score inside this pair.`
+                    });
+                } else {
+                    const outerScore = stack[stack.length - 1];
+                    const innerScore = res;
+                    const pairScore = Math.max(innerScore * 2, 1);
+                    const newRes = outerScore + pairScore;
+
+                    stack.pop();
+                    res = newRes;
+
+                    const isAtomicPair = innerScore === 0;
+
+                    trace.push({
+                        index: i,
+                        char: ch,
+                        stack: [...stack],
+                        res,
+                        type: "close",
+                        line: 11,
+                        title: isAtomicPair
+                            ? "Close empty pair"
+                            : "Close nested group",
+                        formula: `res = ${outerScore} + max(${innerScore} × 2, 1) = ${newRes}`,
+                        explanation: isAtomicPair
+                            ? `Encountered <code>)</code> and the inner score is <strong>0</strong>, so this is <code>()</code>. ` +
+                              `Its score is <strong>1</strong>. Combine it with outer score <strong>${outerScore}</strong>.`
+                            : `Encountered <code>)</code>. The inner expression has score <strong>${innerScore}</strong>, ` +
+                              `so wrapping it doubles it to <strong>${innerScore * 2}</strong>. ` +
+                              `Add outer score <strong>${outerScore}</strong>.`
+                    });
+                }
+            }
+
+            return trace;
+        }
+
+        function activeCodeLine(lineNumber) {
+            document.querySelectorAll(".code-line").forEach((line) => {
+                line.classList.toggle(
+                    "active",
+                    Number(line.dataset.line) === lineNumber
+                );
+            });
+        }
+
+        function renderTokens() {
+            tokensEl.innerHTML = "";
+
+            [...input].forEach((ch, index) => {
+                const token = document.createElement("span");
+                token.className = "token";
+                token.textContent = ch;
+
+                if (index <= currentStep) {
+                    token.classList.add("done");
+                }
+
+                if (index === currentStep) {
+                    token.classList.remove("done");
+                    token.classList.add("current");
+                    token.classList.add(steps[currentStep].type);
+                }
+
+                tokensEl.appendChild(token);
+            });
+        }
+
+        function renderStack(stack) {
+            stackStageEl.innerHTML = "";
+
+            if (stack.length === 0) {
+                const empty = document.createElement("div");
+                empty.className = "empty-stack";
+                empty.textContent = "Stack is empty";
+                stackStageEl.appendChild(empty);
+                return;
+            }
+
+            stack.forEach((value, index) => {
+                const item = document.createElement("div");
+                item.className = "stack-item";
+                item.innerHTML = `
+                    <span>${value}</span>
+                    <small>${index === stack.length - 1 ? "top" : "saved"}</small>
+                `;
+                stackStageEl.appendChild(item);
+            });
+        }
+
+        function setInitialView() {
+            renderTokens();
+            renderStack([]);
+
+            currentCharEl.textContent = "—";
+            resValueEl.textContent = "0";
+            operationTagEl.textContent = "Ready to run";
+            stepBadgeEl.innerHTML = "<span>0</span> Initial state";
+            finalBadgeEl.textContent = "Not started";
+
+            explanationEl.innerHTML =
+                `The algorithm begins with an empty stack and <code>res = 0</code>. ` +
+                `Press <strong>Next</strong> or use <strong>Auto play</strong> to execute one character at a time.`;
+
+            activeCodeLine(5);
+        }
+
+        function setFinishedView() {
+            finalBadgeEl.textContent = `Final score: ${steps[steps.length - 1].res}`;
+            operationTagEl.textContent = "Execution completed";
+        }
+
+        function renderStep() {
+            if (currentStep < 0) {
+                setInitialView();
+                updateControls();
+                return;
+            }
+
+            const step = steps[currentStep];
+
+            renderTokens();
+            renderStack(step.stack);
+
+            currentCharEl.textContent = step.char;
+            resValueEl.textContent = step.res;
+
+            stepBadgeEl.innerHTML =
+                `<span>${currentStep + 1}</span> Step ${currentStep + 1} of ${steps.length}`;
+
+            operationTagEl.textContent = step.title;
+            explanationEl.innerHTML =
+                `${step.explanation}<br><span class="formula">${step.formula}</span>`;
+
+            finalBadgeEl.textContent = "Running";
+            activeCodeLine(step.line);
+
+            if (currentStep === steps.length - 1) {
+                setFinishedView();
+            }
+
+            updateControls();
+        }
+
+        function updateProgress() {
+            const completed = currentStep + 1;
+            const total = steps.length;
+            const percentage = total === 0 ? 0 : (completed / total) * 100;
+
+            progressBar.style.width = `${percentage}%`;
+            progressText.textContent = `${Math.max(completed, 0)} / ${total}`;
+        }
+
+        function updateControls() {
+            const isBeginning = currentStep < 0;
+            const isFinished = currentStep >= steps.length - 1;
+
+            prevBtn.disabled = isBeginning;
+            nextBtn.disabled = isFinished;
+
+            updateProgress();
+
+            if (isFinished && autoplayTimer) {
+                stopAutoplay();
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                renderStep();
+            } else {
+                stopAutoplay();
+            }
+        }
+
+        function previousStep() {
+            if (currentStep >= 0) {
+                currentStep--;
+                renderStep();
+            }
+        }
+
+        function resetAnimation() {
+            stopAutoplay();
+            currentStep = -1;
+            renderStep();
+        }
+
+        function startAutoplay() {
+            if (currentStep >= steps.length - 1) {
+                resetAnimation();
+            }
+
+            const delay = Number(speedSelect.value);
+
+            playBtn.textContent = "❚❚ Pause";
+            playBtn.classList.remove("btn-primary");
+            playBtn.classList.add("btn-secondary");
+
+            autoplayTimer = setInterval(() => {
+                if (currentStep >= steps.length - 1) {
+                    stopAutoplay();
+                    return;
+                }
+
+                nextStep();
+            }, delay);
+        }
+
+        function stopAutoplay() {
+            if (autoplayTimer) {
+                clearInterval(autoplayTimer);
+                autoplayTimer = null;
+            }
+
+            playBtn.textContent = "▶ Auto play";
+            playBtn.classList.remove("btn-secondary");
+            playBtn.classList.add("btn-primary");
+        }
+
+        function toggleAutoplay() {
+            if (autoplayTimer) stopAutoplay();
+            else startAutoplay();
+        }
+
+        function loadInput() {
+            stopAutoplay();
+
+            const value = inputStr.value.trim();
+
+            if (!isBalancedParentheses(value)) {
+                validationMsg.textContent =
+                    "Invalid input: enter a non-empty balanced parentheses string using only ( and ).";
+                validationMsg.classList.add("error");
+                return;
+            }
+
+            validationMsg.textContent =
+                `Loaded "${value}" — ready to visualize ${value.length} operations.`;
+            validationMsg.classList.remove("error");
+
+            input = value;
+            steps = buildSteps(input);
+            currentStep = -1;
+
+            renderStep();
+        }
+
+        loadBtn.addEventListener("click", loadInput);
+        nextBtn.addEventListener("click", nextStep);
+        prevBtn.addEventListener("click", previousStep);
+        resetBtn.addEventListener("click", resetAnimation);
+        playBtn.addEventListener("click", toggleAutoplay);
+
+        speedSelect.addEventListener("change", () => {
+            if (autoplayTimer) {
+                stopAutoplay();
+                startAutoplay();
+            }
+        });
+
+        inputStr.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                loadInput();
+            }
+        });
+
+        document.addEventListener("keydown", (event) => {
+            const target = event.target;
+            const writingInInput =
+                target.tagName === "INPUT" || target.tagName === "SELECT";
+
+            if (writingInInput && event.key !== "Escape") return;
+
+            if (event.key === "ArrowRight") {
+                event.preventDefault();
+                nextStep();
+            }
+
+            if (event.key === "ArrowLeft") {
+                event.preventDefault();
+                previousStep();
+            }
+
+            if (event.code === "Space") {
+                event.preventDefault();
+                toggleAutoplay();
+            }
+
+            if (event.key.toLowerCase() === "r") {
+                resetAnimation();
+            }
+        });
+
+        loadInput();
+    </script>
+</body>
+</html>
