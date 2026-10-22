@@ -6,8 +6,7 @@ using namespace std;
         int ans=0;
         while(left<=right){
             int mid=left+(right-left)/2;
-           
-           if(nums[mid]>=target){
+           if(nums[mid]>target){
                 ans=nums[mid];
                 right=mid-1;
             }
