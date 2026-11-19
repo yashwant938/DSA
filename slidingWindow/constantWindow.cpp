@@ -20,7 +20,7 @@ int main() {
         while(right<n){
             int sum=sum-vec[left];
             left++;
-            right++;
+            right++; 
             sum=sum+vec[right];
             int maxSum=max(maxSum,sum);
         }

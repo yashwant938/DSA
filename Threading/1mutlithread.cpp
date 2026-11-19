@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -22,21 +23,17 @@ void findEven(int start, int end) {
 int main() {
     int start = 0, end = 1900000;
 
-    // Start measuring time
-    auto startTime = chrono::high_resolution_clock::now();
+    auto t1 = chrono::steady_clock::now();
 
-    thread t1(findOdd, start, end);
-    thread t2(findEven, start, end);
+    thread th1(findOdd, start, end);
+    thread th2(findEven, start, end);
 
-    t1.join();
-    t2.join();
+    th1.join();
+    th2.join();
 
-    // Stop measuring time
-    auto endTime = chrono::high_resolution_clock::now();
+    auto t2 = chrono::steady_clock::now();
 
-    auto duration = chrono::duration_cast<chrono::microseconds>(
-        endTime - startTime
-    );
+    auto time = chrono::duration_cast<chrono::microseconds>(t2 - t1);
 
-    cout << "Execution Time: " << duration.count() << " us\n";
+    cout << "Time: " << time.count() << " us\n";
 }

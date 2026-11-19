@@ -30,6 +30,7 @@ echo.
 echo [1/3] Adding files...
 git add -A
 
+
 if errorlevel 1 goto error
 
 :: Git commit
