@@ -1,5 +1,9 @@
 # DSA
 
+[![A bicycle courier pauses over a rain-soaked railway junction as the last green train pulls into the station.](docs/visuals/last-train.webp)](docs/last-train.md)
+
+**[Last train home](docs/last-train.md)** · Six stations, one closing track. How much longer is the courier’s ride to the night market after midnight?
+
 My C++ practice notebook. I add the problems I solve to [Daily LeetCode](Daily%20leetcode/) and keep implementations I want to revisit in the topic folders below.
 
 <a href="Array/Medium/spiralmatrixtraversal.cpp">

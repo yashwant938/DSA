@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="315" viewBox="0 0 700 315" role="img" aria-labelledby="title desc">
+  <title id="title">Night service from Hill Road to Night Market</title>
+  <desc id="desc">Local tracks join 0–1, 1–3, 3–5, 0–2, 2–4 and 4–3. The express track from 2 to 5 closes at midnight.</desc>
+  <rect width="700" height="315" rx="12" fill="#102d32"/>
+  <g fill="none" stroke="#82b6ae" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M72 149 157 64H493L578 149H622"/>
+    <path d="M72 149 150 227H215L293 149H408L493 64"/>
+  </g>
+  <path d="M215 227H544L622 149" fill="none" stroke="#ffb86d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="10 10"/>
+  <g stroke="#102d32" stroke-width="3">
+    <g fill="#f7f0db">
+      <circle cx="215" cy="64" r="18"/><circle cx="215" cy="227" r="18"/>
+      <circle cx="493" cy="64" r="18"/><circle cx="347" cy="149" r="18"/>
+    </g>
+    <g fill="#ffb86d"><circle cx="72" cy="149" r="20"/><circle cx="622" cy="149" r="20"/></g>
+  </g>
+  <g fill="#102d32" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="21" font-weight="bold">
+    <text x="72" y="156">0</text><text x="215" y="71">1</text><text x="215" y="234">2</text>
+    <text x="493" y="71">3</text><text x="347" y="156">4</text><text x="622" y="156">5</text>
+  </g>
+  <g fill="#f7f0db" font-family="system-ui, sans-serif" font-size="17" font-weight="600" text-anchor="middle">
+    <text x="72" y="112">Hill Road</text><text x="622" y="112">Night Market</text>
+  </g>
+  <path d="M27 266H673" stroke="#406267"/>
+  <path d="M32 289H65" stroke="#82b6ae" stroke-width="4" stroke-linecap="round"/>
+  <path d="M232 289H268" stroke="#ffb86d" stroke-width="4" stroke-dasharray="7 6" stroke-linecap="round"/>
+  <g fill="#f7f0db" font-family="system-ui, sans-serif" font-size="17">
+    <text x="78" y="295">Local track</text><text x="283" y="295">Express · closes at midnight</text>
+  </g>
+</svg>
